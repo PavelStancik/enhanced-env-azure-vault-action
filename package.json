@@ -4,6 +4,9 @@
   "description": "This action gets secrets from Azure Vault as ENV parameters for specific environment and type.",
   "main": "index.js",
   "scripts": {
+    "start": "node lib/index.js",
+    "build": "tsc",
+    "prebuild": "rimraf lib/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -11,15 +14,21 @@
     "url": "git+https://github.com/PavelStancik/enhanced-env-azure-vault-action.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Pavel Stancik",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/actions/enhanced-env-azure-vault-action/issues"
   },
   "homepage": "https://github.com/actions/enhanced-env-azure-vault-action#readme",
   "dependencies": {
     "@actions/core": "^1.2.7",
-    "@actions/github": "^4.0.0"
+    "@actions/github": "^4.0.0",
+    "@pavelstancik/enhanced-env-azure-vault": "^1.2.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/node": "^15.0.1",
+    "rimraf": "^3.0.2",
+    "tslint": "^6.1.3",
+    "typescript": "^4.2.4"
+  }
 }

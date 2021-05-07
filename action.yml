@@ -1,13 +1,21 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'Enhanced ENV Azure key vault - Get Secrets'
+description: 'Get Secrets from Azure Key Vault instance and set as ENV variables.'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  key_vault_uri:
+    description: 'Name of the azure key vault'
     required: true
-    default: 'World'
+  environment:
+    description: 'Environment name, e.g.: [PROD | STAGE | TEST]'
+    required: true
+  type:
+    description: 'Type of parameter, e.g.: [frontend | backend]'
+    required: true
 outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  env: # id of output
+    description: 'The environment parameters'
+branding:
+  icon: 'download-cloud'
+  color: 'blue'
 runs:
   using: 'node12'
   main: 'index.js'
