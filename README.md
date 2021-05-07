@@ -1,7 +1,7 @@
-# Hello world JavaScript action
+# Enhanced ENV Azure Vault Action
 
-This action prints "Hello World" or "Hello" + the name of a person to greet to the log. To learn how this action was built, see "[Creating a JavaScript action](https://help.github.com/en/articles/creating-a-javascript-action)" in the GitHub Help documentation.
-
+This action gets secrets from Azure Vault as ENV parameters for specific environment and type.
+It depends on Enhanced ENV Azure Vault NPM package, which prepares data for Azure Key Vault based on environment [staging / testing / production] and type [ Backend / Frontend / ..]
 ## Inputs
 
 ### `who-to-greet`
