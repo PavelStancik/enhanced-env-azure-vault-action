@@ -31,8 +31,8 @@ const preparation = async (proposedEnvironment: string, proposedType: string ) =
 
 };
 
-const e  = core.getInput('environment');
-const t  = core.getInput('type');
+const e  = core.getInput('ENVIRONMENT');
+const t  = core.getInput('TYPE');
 
 preparation(e,t)
 .catch( err => console.error('> ERROR in parameters: ', err.message ));
