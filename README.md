@@ -26,8 +26,14 @@ Environment parameters
 ## Example usage
 
 ```yaml
- - name: Get the secrets
-   uses: actions/enhanced-env-azure-vault@v1.2.0
+- name: Login via Az module
+  uses: azure/login@v1
+    with:
+      creds: ${{ secrets.AZ_LOGIN_CREDENTIALS }}
+      enable-AzPSSession: false
+
+- name: Get the secrets
+  uses: actions/enhanced-env-azure-vault@v1.2.0
     with:
       key_vault_uri: ${{ secrets.KEY_VAULT_URI }}
       environment: TEST
