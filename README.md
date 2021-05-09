@@ -1,7 +1,7 @@
 # Enhanced ENV Azure Vault Action
 
 This action gets secrets from Azure Vault as ENV parameters for specific environment and type.
-It depends on Enhanced ENV Azure Vault NPM package, which prepares data for Azure Key Vault based on environment [staging / testing / production] and type [ Backend / Frontend / ..]
+It depends on Enhanced ENV Azure Vault NPM package, which prepares data for Azure Key Vault based on environment [staging / testing / production] and type [ Backend / Frontend / ..].
 See https://www.npmjs.com/package/enhanced-env-azure-vault
 ## Inputs
 
@@ -33,7 +33,7 @@ Environment parameters
       enable-AzPSSession: false
 
 - name: Get the secrets
-  uses: actions/enhanced-env-azure-vault@v1.2.0
+  uses: actions/enhanced-env-azure-vault-action@v1.0.1
     with:
       key_vault_uri: ${{ secrets.KEY_VAULT_URI }}
       environment: TEST
