@@ -16,6 +16,7 @@ const getEnv = async (tagType: string = '', prefix: string = '') => {
 
             console.log(' tag environment:', element.tags.environment);
             console.log(' tag type:', element.tags.type);
+            console.log(' whole:', element);
 
         }
 
