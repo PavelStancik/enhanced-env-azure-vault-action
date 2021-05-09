@@ -31,6 +31,8 @@ const preparation = async (proposedEnvironment: string, proposedType: string ) =
 
 };
 
+const KEY_VAULT_URI = core.getInput('KEY_VAULT_URI');
+process.env['KEY_VAULT_URI'] = KEY_VAULT_URI;
 const e  = core.getInput('ENVIRONMENT');
 const t  = core.getInput('TYPE');
 
