@@ -2,22 +2,35 @@
 
 This action gets secrets from Azure Vault as ENV parameters for specific environment and type.
 It depends on Enhanced ENV Azure Vault NPM package, which prepares data for Azure Key Vault based on environment [staging / testing / production] and type [ Backend / Frontend / ..]
+See https://www.npmjs.com/package/enhanced-env-azure-vault
 ## Inputs
 
-### `who-to-greet`
+### `key_vault_uri`
 
-**Required** The name of the person to greet. Default `"World"`.
+**Required** URL to the Azure Key Vault.
+
+### `environment`
+
+**Required** One of [TEST | STAGE | PROD] environments, for which the Azure Secrets wil be downloaded.
+
+### `type`
+
+**Required** One of [frontend | backend] type of secret, stored in Azure Kez Vault as secret.
 
 ## Outputs
 
-### `time`
+### `env`
 
-The time we greeted you.
+Environment parameters
 
 ## Example usage
 
 ```yaml
-uses: actions/hello-world-javascript-action@main
-with:
-  who-to-greet: 'Mona the Octocat'
+ - name: Get the secrets
+   uses: actions/enhanced-env-azure-vault@v1.2.0
+    with:
+      key_vault_uri: ${{ secrets.KEY_VAULT_URI }}
+      environment: TEST
+      type: frontend
+    id: env
 ```
