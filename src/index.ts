@@ -27,9 +27,10 @@ const preparation = async (proposedEnvironment: string, proposedType: string ) =
   
   const azureParameters = await manager.listAll(prefix, type); 
 
+  console.log(`Setting ENV params for environment: ${prefix} and type: ${type}:`);
   azureParameters.map( secretObject => {
     if (secretObject.enabled && secretObject.environment === prefix && secretObject.tags.type === type) {
-      console.log(`For this environment: ${prefix} and type: ${type} we have this ENV: ${secretObject.name} = ${(secretObject.value).substr(0,5)}****`);
+      //console.log(`For this environment: ${prefix} and type: ${type} we have this ENV: ${secretObject.name} = ${(secretObject.value).substr(0,5)}****`);
       core.exportVariable(secretObject.name, secretObject.value);
       core.setSecret(secretObject.value);
     }
