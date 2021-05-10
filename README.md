@@ -23,6 +23,11 @@ See https://www.npmjs.com/package/enhanced-env-azure-vault
 
 Environment parameters, you can see them in your Action job as `${{ env.xxxx }}`
 
+### `json`
+
+The JSON structure of App Service setting (You normally find in AppService - Setting - Configuration in your Azure).   
+This could be used by `Azure/appservice-settings@v1` action.
+
 ## Example usage
 
 ```yaml
@@ -33,7 +38,7 @@ Environment parameters, you can see them in your Action job as `${{ env.xxxx }}`
       enable-AzPSSession: false
 
 - name: Get the secrets
-  uses: actions/enhanced-env-azure-vault-action@v1.0.1
+  uses: actions/enhanced-env-azure-vault-action@v1.0.8
     with:
       KEY_VAULT_URI: ${{ secrets.KEY_VAULT_URI }}
       ENVIRONMENT: TEST

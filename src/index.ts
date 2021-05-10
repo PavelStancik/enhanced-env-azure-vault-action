@@ -22,19 +22,27 @@ const preparation = async (proposedEnvironment: string, proposedType: string ) =
   if (!typeVariant.includes(proposedType)) {
     throw new Error("Type parameter set incorrectly, choose one of [frontend | backend].");
   }
-  const prefix = proposedEnvironment; 
-  const type = proposedType;
-  
+  const prefix: string = proposedEnvironment; 
+  const type: string = proposedType;
+  let arrJson: {}[];
+
   const azureParameters = await manager.listAll(prefix, type); 
 
   console.log(`Setting ENV params for environment: ${prefix} and type: ${type}:`);
   azureParameters.map( secretObject => {
     if (secretObject.enabled && secretObject.environment === prefix && secretObject.tags.type === type) {
+      const obj:{} = {};
       //console.log(`For this environment: ${prefix} and type: ${type} we have this ENV: ${secretObject.name} = ${(secretObject.value).substr(0,5)}****`);
       core.exportVariable(secretObject.name, secretObject.value);
       core.setSecret(secretObject.value);
+      obj['name'] = secretObject.name;
+      obj['value'] = secretObject.value;
+      obj['slotSetting'] = false;
+      arrJson.push(obj);
     }
   })
+
+  core.setOutput("json", JSON.stringify(arrJson, null, 4));
 
 };
 
