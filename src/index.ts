@@ -1,7 +1,7 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
 
-const KEY_VAULT_URI = core.getInput('KEY_VAULT_URI');
+const KEY_VAULT_URI = core.getInput('KEY_VAULT_URI') || process.env.KEY_VAULT_URI;
 process.env['KEY_VAULT_URI'] = KEY_VAULT_URI;
 
 import * as manager from "enhanced-env-azure-vault";
@@ -24,7 +24,7 @@ const preparation = async (proposedEnvironment: string, proposedType: string ) =
   }
   const prefix: string = proposedEnvironment; 
   const type: string = proposedType;
-  let arrJson: {}[];
+  let arrJson: {}[] = [];
 
   const azureParameters = await manager.listAll(prefix, type); 
 
@@ -42,13 +42,13 @@ const preparation = async (proposedEnvironment: string, proposedType: string ) =
     }
   })
 
-  core.setOutput("json", JSON.stringify(arrJson, null, 4));
+  core.setOutput("json", JSON.stringify(arrJson, null));
 
 };
 
 
-const e  = core.getInput('ENVIRONMENT');
-const t  = core.getInput('TYPE');
+const e  = core.getInput('ENVIRONMENT') || process.env.ENVIRONMENT;
+const t  = core.getInput('TYPE') || process.env.TYPE;
 
 preparation(e,t)
-.catch( err => console.error('> ERROR in parameters: ', err.message ));
+.catch( err => console.error('> ERROR in parameters: ', err ));

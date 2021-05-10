@@ -1,6 +1,6 @@
 {
   "name": "enhanced-env-azure-vault-action",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "This action gets secrets from Azure Vault as ENV parameters for specific environment and type.",
   "main": "index.js",
   "scripts": {
