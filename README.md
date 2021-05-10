@@ -5,15 +5,15 @@ It depends on Enhanced ENV Azure Vault NPM package, which prepares data for Azur
 See https://www.npmjs.com/package/enhanced-env-azure-vault
 ## Inputs
 
-### `key_vault_uri`
+### `KEY_VAULT_URI`
 
 **Required** URL to the Azure Key Vault.
 
-### `environment`
+### `ENVIRONMENT`
 
 **Required** One of [TEST | STAGE | PROD] environments, for which the Azure Secrets wil be downloaded.
 
-### `type`
+### `TYPE`
 
 **Required** One of [frontend | backend] type of secret, stored in Azure Kez Vault as secret.
 
@@ -21,7 +21,7 @@ See https://www.npmjs.com/package/enhanced-env-azure-vault
 
 ### `env`
 
-Environment parameters
+Environment parameters, you can see them in your Action job as `${{ env.xxxx }}`
 
 ## Example usage
 
@@ -35,8 +35,7 @@ Environment parameters
 - name: Get the secrets
   uses: actions/enhanced-env-azure-vault-action@v1.0.1
     with:
-      key_vault_uri: ${{ secrets.KEY_VAULT_URI }}
-      environment: TEST
-      type: frontend
-    id: env
+      KEY_VAULT_URI: ${{ secrets.KEY_VAULT_URI }}
+      ENVIRONMENT: TEST
+      TYPE: frontend
 ```
