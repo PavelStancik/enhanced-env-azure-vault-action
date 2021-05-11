@@ -11,8 +11,10 @@ inputs:
     description: 'Type of parameter, e.g.: [frontend | backend]'
     required: true
 outputs:
-  env: # id of output
+  env:
     description: 'The environment parameters'
+  json:
+    description: 'The environment parameters in json for AppService config'
 branding:
   icon: 'download-cloud'
   color: 'blue'
