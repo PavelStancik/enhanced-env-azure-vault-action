@@ -28,6 +28,11 @@ Environment parameters, you can see them in your Action job as `${{ env.xxxx }}`
 The JSON structure of App Service setting (You normally find in AppService - Setting - Configuration in your Azure).   
 This could be used by `Azure/appservice-settings@v1` action.
 
+### `terraform`
+
+The Hashicorp Terraform `tfvars` structure as `portal_app_settings_secrets` object.   
+This could be used by `hashicorp/setup-terraform@v1.2.1` action.
+
 ## Example usage
 
 ```yaml
@@ -38,9 +43,71 @@ This could be used by `Azure/appservice-settings@v1` action.
       enable-AzPSSession: false
 
 - name: Get the secrets
-  uses: actions/enhanced-env-azure-vault-action@v1.0.8
-    with:
-      KEY_VAULT_URI: ${{ secrets.KEY_VAULT_URI }}
-      ENVIRONMENT: TEST
-      TYPE: frontend
+  uses: PavelStancik/enhanced-env-azure-vault-action@v1.0.10
+  with:
+    KEY_VAULT_URI: ${{ secrets.KEY_VAULT_URI }}
+    ENVIRONMENT: TEST
+    TYPE: frontend
+  id: aenv
+
+#This is just for zou to see the output, this is just printing output
+- name: Get the output variables as standard ENV
+  run: |
+    echo "***************************************"
+    echo $json_var | jq '.[].name'
+    echo "***************************************"
+    echo $json_var | jq
+  env:
+    json_var: ${{ steps.aenv.outputs.json}}
+
+#This sets the Azure App Service settings
+- name: Set Web App Settings
+  uses: Azure/appservice-settings@v1
+  with:
+    app-name: ${{ env.AZURE_WEBAPP_NAME }}
+    mask-inputs: false
+    app-settings-json: ${{ steps.aenv.outputs.json}}
+
+#This creates file for Terraform in ../terraform dir
+- name: Set the ENV as tfvars
+  working-directory: terraform
+  run: |
+    echo $terraform_var > ./terraform.tfvars 
+  env:
+    terraform_var: ${{ steps.aenv.outputs.terraform}}
+  
+```
+
+The structure of variable.tf is:
+```yaml
+variable "portal_app_settings" {
+  type      = map(map(string))
+  default   = { "eun" = { "Hello" = "World" } }
+  sensitive = true
+}
+```
+
+After deploy do not forget to remove the `terraform.tfvars` file for security reasons:
+```yaml
+      # Create/Destroy infrastructure
+      - name: Create/Destroy infrastructure
+        working-directory: terraform
+        run: |
+          terraform init -input=false
+          terraform plan -out=tfplan -input=false
+          terraform apply -input=false tfplan
+          rm ./terraform.tfvars 
+          rm ./tfplan
+
+```
+
+The structure:
+```yaml
+web_app_settings = {
+    WEBSITES_PORT = "3000"
+}
+```
+Assigning in Terraform:
+```yaml
+  app_settings = var.web_app_settings
 ```
