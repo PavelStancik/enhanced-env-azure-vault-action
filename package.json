@@ -1,6 +1,6 @@
 {
   "name": "enhanced-env-azure-vault-action",
-  "version": "1.0.10",
+  "version": "1.1.0",
   "description": "This action gets secrets from Azure Vault as ENV parameters for specific environment and type.",
   "main": "index.js",
   "scripts": {
@@ -22,8 +22,7 @@
   "homepage": "https://github.com/actions/enhanced-env-azure-vault-action#readme",
   "dependencies": {
     "@actions/core": "^1.2.7",
-    "@actions/github": "^4.0.0",
-    "enhanced-env-azure-vault": "^1.2.1"
+    "enhanced-env-azure-vault": "^1.2.3"
   },
   "devDependencies": {
     "@types/node": "^15.0.2",
