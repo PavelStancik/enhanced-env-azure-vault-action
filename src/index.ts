@@ -52,7 +52,6 @@ const preparation = async (proposedEnvironment: string, proposedType: string ) =
     if (secretObject.enabled && secretObject.environment === prefix) {
       core.setSecret(secretObject.value);
       tfvars.push(` ${secretObject.name} = ${secretObject.value}`);
-console.log(` ${secretObject.name} = ${secretObject.value}`);
     }
 
   })
