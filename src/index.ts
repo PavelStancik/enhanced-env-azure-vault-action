@@ -19,12 +19,13 @@ const preparation = async (proposedEnvironment: string, proposedType: string ) =
     throw new Error("Environment parameter set incorrectly, choose one of [TEST | STAGE | PROD].");
   }
   if (!typeVariant.includes(proposedType)) {
-    throw new Error("Type parameter set incorrectly, choose one of [frontend | backend | both].");
+    throw new Error("Type parameter set incorrectly, choose one of [frontend | backend.");
   }
   const prefix: string = proposedEnvironment; 
   const type: string = proposedType;
   let arrJson: {}[] = [];
-  let tfvars: string[] = [];
+  let tfvars_frontend: string[] = [];
+  let tfvars_backend: string[] = [];
 
   const azureParameters = await manager.listAll(prefix, type); 
 
@@ -49,21 +50,49 @@ const preparation = async (proposedEnvironment: string, proposedType: string ) =
   const terraformParameters = await manager.listAll(prefix);
 
   terraformParameters.map( secretObject => {
-    if (secretObject.enabled && secretObject.environment === prefix) {
+    if (secretObject.enabled && secretObject.environment === prefix && secretObject.tags.type !== undefined) {
+      
       core.setSecret(secretObject.value);
-      tfvars.push(` ${secretObject.name} = ${secretObject.value}`);
+      secretObject.value = (secretObject.value).replace(/\\/g, "\\\\");
+
+      if (secretObject.tags.type === 'frontend') tfvars_frontend.push(` "${secretObject.name}"="${secretObject.value}"\
+      `);
+      if (secretObject.tags.type === 'backend') tfvars_backend.push(` "${secretObject.name}"="${secretObject.value}"\
+       `);
+
     }
 
   })
 
   core.setOutput("json", JSON.stringify(arrJson, null));
-
-  core.setOutput("terraform", prepareTfVars(tfvars));
+  core.setOutput("terraform", prepareTfVars(tfvars_frontend,tfvars_backend));
 
 };
 
-const prepareTfVars = (tfvars: string[]) => {
-  return `web_app_settings = {${tfvars}}`
+const prepareTfVars = (frontend: string[], backend: string[]) => {
+  
+  frontend.toString = function() {
+    return this.join(`\
+    `);
+  };
+
+  backend.toString = function() {
+    return this.join(`
+    `);
+  };
+
+  let return_object = `web_app_settings = {\
+    `;
+  return_object = return_object.concat(`\
+   frontend = {\
+     ${frontend}\
+  }, `);
+  return_object = return_object.concat(`\
+   backend = {\
+     ${backend} \
+    } \
+  }`);
+  return return_object;
 }
 
 
