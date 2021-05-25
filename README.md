@@ -30,7 +30,7 @@ This could be used by `Azure/appservice-settings@v1` action.
 
 ### `terraform`
 
-The Hashicorp Terraform `tfvars` structure as `portal_app_settings_secrets` object.   
+The Hashicorp Terraform `tfvars.json` structure as `portal_app_settings_secrets` object.   
 This could be used by `hashicorp/setup-terraform@v1.2.1` action.
 
 ## Example usage
@@ -72,7 +72,7 @@ This could be used by `hashicorp/setup-terraform@v1.2.1` action.
 - name: Set the ENV as tfvars
   working-directory: terraform
   run: |
-    echo $terraform_var > ./terraform.tfvars 
+    echo $terraform_var > ./terraform.tfvars.json   
   env:
     terraform_var: ${{ steps.aenv.outputs.terraform}}
   
@@ -80,14 +80,14 @@ This could be used by `hashicorp/setup-terraform@v1.2.1` action.
 
 The structure of variable.tf is:
 ```yaml
-variable "portal_app_settings" {
+variable "web_app_settings" {
   type      = map(map(string))
   default   = { "eun" = { "Hello" = "World" } }
   sensitive = true
 }
 ```
 
-After deploy do not forget to remove the `terraform.tfvars` file for security reasons:
+After deploy do not forget to remove the `terraform.tfvars.json` file for security reasons:
 ```yaml
       # Create/Destroy infrastructure
       - name: Create/Destroy infrastructure
@@ -96,18 +96,23 @@ After deploy do not forget to remove the `terraform.tfvars` file for security re
           terraform init -input=false
           terraform plan -out=tfplan -input=false
           terraform apply -input=false tfplan
-          rm ./terraform.tfvars 
+          rm ./terraform.tfvars.json
           rm ./tfplan
 
 ```
 
 The structure:
-```yaml
-web_app_settings = {
-    WEBSITES_PORT = "3000"
+```json
+{ 
+  "web_app_settings": {
+  "frontend": {
+    "WEBSITES_PORT": "3000",
+    "WEBSITES_URL": "http://localhost"
+    }  
+  }
 }
 ```
 Assigning in Terraform:
 ```yaml
-  app_settings = var.web_app_settings
+  app_settings = var.web_app_settings[frontend]
 ```

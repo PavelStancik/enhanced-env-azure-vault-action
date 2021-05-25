@@ -16,7 +16,7 @@ outputs:
   json:
     description: 'The environment parameters in json for AppService config'
   terraform:
-    description: 'The environment parameters as terraform secrets'
+    description: 'The environment parameters as terraform secrets in JSON format'
 branding:
   icon: 'download-cloud'
   color: 'blue'

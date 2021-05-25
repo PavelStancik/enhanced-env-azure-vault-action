@@ -52,13 +52,11 @@ const preparation = async (proposedEnvironment: string, proposedType: string ) =
   terraformParameters.map( secretObject => {
     if (secretObject.enabled && secretObject.environment === prefix && secretObject.tags.type !== undefined) {
       
-      core.setSecret(secretObject.value);
+      //core.setSecret(secretObject.value);
       secretObject.value = (secretObject.value).replace(/\\/g, "\\\\");
 
-      if (secretObject.tags.type === 'frontend') tfvars_frontend.push(` "${secretObject.name}"="${secretObject.value}"\
-      `);
-      if (secretObject.tags.type === 'backend') tfvars_backend.push(` "${secretObject.name}"="${secretObject.value}"\
-       `);
+      if (secretObject.tags.type === 'frontend') tfvars_frontend.push(` "${secretObject.name}":"${secretObject.value}" `);
+      if (secretObject.tags.type === 'backend') tfvars_backend.push(` "${secretObject.name}":"${secretObject.value}" `);
 
     }
 
@@ -71,27 +69,10 @@ const preparation = async (proposedEnvironment: string, proposedType: string ) =
 
 const prepareTfVars = (frontend: string[], backend: string[]) => {
   
-  frontend.toString = function() {
-    return this.join(`\
-    `);
-  };
-
-  backend.toString = function() {
-    return this.join(`
-    `);
-  };
-
-  let return_object = `web_app_settings = {\
+  let return_object = `{ "web_app_settings": {\
     `;
-  return_object = return_object.concat(`\
-   frontend = {\
-     ${frontend}\
-  }, `);
-  return_object = return_object.concat(`\
-   backend = {\
-     ${backend} \
-    } \
-  }`);
+  return_object = return_object.concat(` "frontend": { ${frontend} }, `);
+  return_object = return_object.concat(` "backend": { ${backend} } } }`);
   return return_object;
 }
 
