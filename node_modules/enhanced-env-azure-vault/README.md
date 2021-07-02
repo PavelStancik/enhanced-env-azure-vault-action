@@ -84,5 +84,5 @@ scanVault()
 
 // Now we can distinguish for example [testing / staging / production] environments
 // AND type: [backend / frontend]
-// OR utiliye any other tag patterns 
+// OR utilize any other tag patterns 
 ```
