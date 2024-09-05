@@ -22,7 +22,7 @@
   "homepage": "https://github.com/actions/enhanced-env-azure-vault-action#readme",
   "dependencies": {
     "@actions/core": "^1.5.0",
-    "enhanced-env-azure-vault": "^1.2.4"
+    "enhanced-env-azure-vault": "^1.2.6"
   },
   "devDependencies": {
     "@types/node": "^15.14.0",
